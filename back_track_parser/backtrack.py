@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from copy import copy
+import sys
 
 class BackTrack(object):
     """Top-Down Depth First Parsing: backtrack"""
@@ -87,9 +88,13 @@ class BackTrack(object):
         return False
 
 if __name__ == '__main__':
+    try:
+        string = sys.argv[1]
+    except Exception as e:
+        print e
+        sys.exit()
     grammar = [('S', ['a', 'S', 'b', 'S']), ('S', ['b', 'S', 'a', 'S']), ('S', ['epl'])]
     tokens = [('S'), ('a', 'b', 'epl')]
-    string = "abab"
     back_track = BackTrack(grammar, tokens)
     rst = back_track.parse(string)
     print rst
