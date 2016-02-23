@@ -28,3 +28,7 @@ len([_ | B], N) :- len(B, N1), N is N1 + 1.
 atoms([], 0).
 atoms(A, 1):- atom(A). % built-in predicate atom(X) yields true if X is an atom.
 atoms([A | B], R) :- atoms(A, R1), atoms(B, R2), R is R1 + R2.
+
+% succeeds when X fails.
+not(X):- X,!,fail.
+not(_).
