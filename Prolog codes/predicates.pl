@@ -7,6 +7,9 @@ append([A | B], C, [A | D]) :- append(B, C, D).
 flatten([], []).
 flatten([A | B], [[A] | C]) :- flatten(B, C).
 
+last([_|Tail], Y) :- last(Tail, Y).
+last([X], X).
+
 % takes a list of integers and computes the sum of the integers.
 sum([], 0).
 sum([A | B], R) :- sum(B, R1), R is A + R1.
