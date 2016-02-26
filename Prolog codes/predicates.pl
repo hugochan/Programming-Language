@@ -35,3 +35,7 @@ atoms([A | B], R) :- atoms(A, R1), atoms(B, R2), R is R1 + R2.
 % succeeds when X fails.
 not(X):- X,!,fail.
 not(_).
+
+
+range(H, H, [H]).
+range(L, H, [L | R]):- L < H, N is L + 1, range(N, H, R).
