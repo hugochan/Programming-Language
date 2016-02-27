@@ -66,19 +66,21 @@ is_term(term(num,_)).
 % the predictive parser.
 % E.g., transform([3,-,5],R),parseLL(R,ProdSeq).
 % ProdSeq = [0, 1, 4, 6, 2, 4, 6, 3].
-parseLL([H|T], [N|N1]) :- predict(non(s,_),H,N), attribute(N,[_|R]), parseLL2([H|T],N1,[R]).
+parseLL([H|T], [N|N1]) :- predict(non(s,_),H,N), attribute(N,[_|R]), parseLL2([H|T],N1,R).
 
 parseLL2([], [], []).
+parseLL2([], [N|N1], [S1|S2]) :- predict(S1,term(eps,_),N), parseLL2([],N1,S2).
 parseLL2([H|T], [N|N1], [term(eps,_)|S2]) :- parseLL2([H|T],[N|N1],S2).
-parseLL2([H|T], [N|N1], [S1|S2]) :- is_term(S1), match(S1,H), parseLL2(T,[N|N1],S2).
+parseLL2([H|T], [N|N1], [S1|S2]) :- is_term(S1), S1=H, parseLL2(T,[N|N1],S2).
 parseLL2([H|T], [N|N1], [S1|S2]) :- predict(S1,H,N), attribute(N,[_|R]), append(R,S2,S), parseLL2([H|T],N1,S).
 
-match(S1,H) :- .
-
 attribute(N,[H|R]) :- prod(N,[H|R]).
+
 
 % Later, write parseAndSolve which augments parseLL with the
 % computation of the expression value.
 % E.g., transform([3,-,5],R),parseAndSolve(R,ProdSeq,V).
 % ProdSeq = [0, 1, 4, 6, 2, 4, 6, 3],
 % V = -2.
+parseAndSolve([H|T], [N|N1], V).
+
