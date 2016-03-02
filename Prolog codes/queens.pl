@@ -31,7 +31,7 @@ diagonal((X1,Y1),(X2,Y2)):-N is Y2-Y1,D is X2-X1,
 
 queens(P):- queen_no(N), length(P,N), placement(P), ok_place(P).
 
-% test(A) :- queen_no(N), length(A, N), placement(A).
+test(A) :- queen_no(N), length(A, N), placement(A).
 placement([]).
 placement([(R,F)|P]):- placement(P), rank(R), file(F).
 
