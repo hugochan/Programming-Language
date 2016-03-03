@@ -2,7 +2,6 @@
 
 
 walk(null, [null]).
-walk(Tree, [H|T]) :- parse(Tree, H, L, R), walk(L, T1), walk(R, T2), append(T1, T2, T). % pre-order
-% walk(Tree, T) :- parse(Tree, H, L, R), walk(L, T1), walk(R, T2), append(T1, [H], TT), append(TT, T2, T). % in-order
-% walk(Tree, T) :- parse(Tree, H, L, R), walk(L, T1), walk(R, T2), append(T1, T2, TT), append(TT, [H], T). % post-order
-parse(bintree(H, L, R), H, L, R).
+% walk(bintree(H, L, R), [H|T]) :- walk(L, T1), walk(R, T2), append(T1, T2, T). % pre-order
+% walk(bintree(H, L, R), T) :- walk(L, T1), walk(R, T2), append(T1, [H], TT), append(TT, T2, T). % in-order
+walk(bintree(H, L, R), T) :- walk(L, T1), walk(R, T2), append(T1, T2, TT), append(TT, [H], T). % post-order
