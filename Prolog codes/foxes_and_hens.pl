@@ -1,22 +1,36 @@
-link([A, B, C], [D, E, F]) :- D is A + 1, E is B, F is C + 1.
-link([A, B, C], [D, E, F]) :- D is A, E is B + 1, F is C + 1.
-link([A, B, C], [D, E, F]) :- D is A - 2, E is B, F is C - 1.
-link([A, B, C], [D, E, F]) :- D is A, E is B - 2, F is C - 1.
-link([A, B, C], [D, E, F]) :- D is A - 1, E is B - 1, F is C - 1.
+num(3, 3). % numbers of foxes and hens
 
-requires([LF, LH, LB]) :- LF @=< LH, 0 @=< LF, LF @=< 3, 0 @=< LH, LH @=< 3, 0 @=< LB, LB @=< 1. % right shore?
+link([A, B, 0], [D, E, 1]) :- D is A + 1, E is B.
+link([A, B, 0], [D, E, 1]) :- D is A, E is B + 1.
+link([A, B, 0], [D, E, 1]) :- D is A + 2, E is B. % back 2
+link([A, B, 0], [D, E, 1]) :- D is A, E is B + 2.
+link([A, B, 0], [D, E, 1]) :- D is A + 1, E is B + 1.
 
-go(X, Y) :- link(X, Y), \+ member(Y, []), requires(Y). % use cut !
+link([A, B, 1], [D, E, 0]) :- D is A - 2, E is B.
+link([A, B, 1], [D, E, 0]) :- D is A, E is B - 2.
+link([A, B, 1], [D, E, 0]) :- D is A - 1, E is B - 1.
 
-sub_solve([[0, 0, 0] | []]).
-sub_solve([X | [Y, T]]) :- go(X, Y), sub_solve([Y | T]).
+invalid([F, _, _]) :- F < 0.
+invalid([F, _, _]) :- F > 3.
+invalid([_, H, _]) :- H < 0.
+invalid([_, H, _]) :- H > 3.
+invalid([_, _, B]) :- B < 0.
+invalid([_, _, B]) :- B > 1.
+invalid([F, H, _]) :- 3-F > 3-H, 3-H > 0.
+invalid([F, H, _]) :- F > H, H > 0.
 
-solve([[3, 3, 1] | [Y, T]]) :- go([3, 3, 1], Y), sub_solve([ Y | T]).
+% requires([LF, LH, LB]) :- num(N, M), safe([LF, LH]), RF is N - LF, RH is M - LH, safe([RF, RH]), 0 @=< LF, LF @=< N, 0 @=< LH, LH @=< M, 0 @=< LB, LB @=< 1.
 
+% safe([_, 0]).
+% safe([F, H]) :- F @=< H.
 
-last([X], Y):-
-        Y is X,
-        write(X).
+go(Z, X, Y) :-
+            link(Z,Y),
+%            requires(Y),
+            not(invalid(Y)),
+            not(member(Y,X)).
 
-last([Y|Tail], Y):-
-    last(Tail, Y).
+sub_solve([0, 0, 0], _, []).
+sub_solve(Z, X, [Y | T]) :- go(Z, X, Y), sub_solve(Y, [Y|X], T).
+
+solve([[N,M,1] | T]) :- num(N, M), sub_solve([N,M,1], [[N,M,1]], T).
