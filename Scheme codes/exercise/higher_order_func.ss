@@ -25,3 +25,20 @@
           )
   )
 
+
+; folds ('reduces') the elements of a list into one, from right-to-left
+; (foldr append `((1 2) (3 4)) `()) yields (1 2 3 4).
+(define (foldr op lis id)
+		(if (null? lis) id
+		    (op (car lis) (foldr op (cdr lis) id))
+                    ))
+
+
+; folds ('reduces') the elements of a list into one, from left-to-right
+; (foldl append `((1 2) (3 4)) `(2)) yields (1 2 3 4).
+(define (foldl op lis id) 
+  (if (null? lis) id  
+      (foldl op (cdr lis) (op id (car lis)))))
+
+
+; returns the reverse of a list using foldl
