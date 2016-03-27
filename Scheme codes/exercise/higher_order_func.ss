@@ -41,4 +41,21 @@
       (foldl op (cdr lis) (op id (car lis)))))
 
 
-; returns the reverse of a list using foldl
+; returns the reverse of a list using foldl.
+; (rev `(1 (2 3) 3)) yields (3 (2 3) 1).
+(define (rev lis) (foldl (lambda (x y) (cons y x)) lis `()))
+
+
+; returns the reverse of a list using foldr.
+; (rev2 `(1 (2 3) 3)) yields (3 (2 3) 1).
+; error
+(define (rev2 lis) (foldr (lambda (x y) (append x (cons y `()))) lis `()))
+
+
+; computes the length of the list using foldl.
+; (len `(1 2 (3) 3)) yields 4.
+(define (len lis)
+  (if (null? lis) 0
+    (foldl (lambda (x y) (+ 1 x)) (cdr lis) 1)
+    )
+  )

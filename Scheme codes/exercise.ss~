@@ -1,3 +1,0 @@
-; returns the length of a list
-(define (len x)
-  (cond ((null?  x)  0)  (else  (+ 1 (len (cdr  x))))))
