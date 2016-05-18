@@ -16,11 +16,21 @@
       ((atom? s) 1)
           (else (apply + (map counta2 s)))))
 
+
+; flattens a list
+; (flatten `(1 (2 (3)))) yields (1 2 3)
+(define (flatten lis)
+  (cond ((null? lis) `())
+        ((atom? lis) (list lis))
+        (else (foldl (lambda (x y) (append x y)) (map flatten lis) `()))
+        )
+  )
+
 ; flattens a list
 ; (flatten2 `(1 (2 (3)))) yields (1 2 3)
 (define (flatten2 lis)
     (cond ((null? lis) `())
-          ((atom? lis) (cons lis `()))
+          ((atom? lis) (list lis))
           (else (apply append (map flatten2 lis)))
           )
   )
@@ -49,7 +59,7 @@
 ; returns the reverse of a list using foldr.
 ; (rev2 `(1 (2 3) 3)) yields (3 (2 3) 1).
 ; error
-(define (rev2 lis) (foldr (lambda (x y) (append x (cons y `()))) lis `()))
+(define (rev2 lis) (foldr (lambda (x y) (append y (cons x `()))) lis `()))
 
 
 ; computes the length of the list using foldl.
@@ -59,3 +69,10 @@
     (foldl (lambda (x y) (+ 1 x)) (cdr lis) 1)
     )
   )
+
+; filter
+; (filter (lambda (x) (< x 5)) `(3 9 5 2 4 7)) yields (3 2 4).
+(define (filter p l)
+  (foldl (lambda (x y) (if (p y) (append x (list y)) x)) l `())
+  )
+
